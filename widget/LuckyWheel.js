@@ -11,7 +11,7 @@
 		var config = {
 			size:400, // size in px
 			framerate:60,
-			numOfSector: 16, // number of
+			numOfSector: 20, // number of
 			slowEndEffect : 1, // 0 = off , 1 = on
 			physics:{
 				angular:{
@@ -112,6 +112,9 @@
 				startAngle : angle,
 				endAngle : angle + sectorAngle
 			});
+
+			// significantly increase performace by using cache
+			sectorContainer.cache(0,0,config.size * 2,config.size * 2);
 
 			if(typeof cb === "function") cb(sectorContainer);
 
