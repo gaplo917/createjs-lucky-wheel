@@ -79,7 +79,7 @@
 				id = Math.floor(angle / sectorAngle),
 				color = Math.random() * 0xFFFFFF,
 				textColor = 0x000000,
-				text = new createjs.Text(id, Math.min(50 * 3 ,sectorAngle *3) + "px Arial", createjs.Graphics.getRGB( textColor));
+				text = new createjs.Text(id == 0 ? "大\n獎" : id, Math.min(50 * 3 ,sectorAngle *3) + "px Arial", createjs.Graphics.getRGB( textColor));
 
 			shape.graphics.f(createjs.Graphics.getRGB(color));
 			shape.graphics.beginStroke(createjs.Graphics.getRGB(color - 0x000000)).setStrokeStyle(1);
@@ -91,7 +91,7 @@
 			shape.rotation = -1 * (sectorAngle/2) - 90 ;
 
 			// hard tuning on relative position
-			text.x = config.size * 2.97 / 3;
+			text.x = config.size * 2.94 / 3;
 			text.y = config.size * 1.7 / 3;
 			text.regX = Math.min(50 * 3 ,sectorAngle *3)/5;
 
