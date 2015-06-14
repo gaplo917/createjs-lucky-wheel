@@ -5,6 +5,9 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
     <title></title>
     <script src="plugin/createjs/createjs-2015.05.21.combined.js"></script>
     <script src="plugin/underscore/underscore.js"></script>
@@ -19,34 +22,35 @@
         var canvasDom = document.getElementById("demoCanvas"),
             stage = new createjs.Stage("demoCanvas"),
             luckyWheel = new LuckyWheel(stage);
-
-        canvasDom.height = luckyWheel.getConfig().size;
-        canvasDom.width = luckyWheel.getConfig().size + 200;
+        
+        canvasDom.height = luckyWheel.getConfig().size + 200;
+        canvasDom.width = luckyWheel.getConfig().size;
 
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.maxDelta = 0;
         createjs.Ticker.framerate = luckyWheel.getConfig().framerate;
 
+        //tick event
+        function tick() {stage.update();}
+
         // register tick event
-        createjs.Ticker.addEventListener("tick", function () {
-            stage.update();
-        });
+        createjs.Ticker.addEventListener("tick", tick);
 
         //Override the config
         //luckyWheel.setConfig({numOfSector:10});
 
-        luckyWheel.init();
+        luckyWheel.init(0,50);
 
         var startText = new Button("START", "#66FF66"),
             endText = new Button(" STOP ", "#FF6666");
 
         startText.set({
-            x : luckyWheel.getConfig().size + 20 ,
-            y: 100
+            x : 50 ,
+            y: 0
         });
         endText.set({
-            x : luckyWheel.getConfig().size + 20,
-            y : 200
+            x : 150,
+            y : 0
         });
         endText.alpha = 0.4;
 
@@ -54,6 +58,7 @@
         startText.addEventListener('click', function () {
             createjs.Ticker.removeEventListener("tick", luckyWheel.event.deceleration);
             createjs.Ticker.addEventListener("tick", luckyWheel.event.acceleration);
+            createjs.Ticker.addEventListener("tick", tick);
             endText.alpha = 1;
             startText.alpha = 0.4;
         });
@@ -63,6 +68,11 @@
             startText.alpha = 1;
             endText.alpha = 0.4;
         });
+
+        stage.addEventListener('END', function () {
+            createjs.Ticker.removeEventListener("tick", tick);
+        });
+
         stage.addChild(startText);
         stage.addChild(endText);
         stage.update();
@@ -71,6 +81,16 @@
 
 
 </script>
+<style>
+    body{
+        max-height: 800px;
+        max-width: 600px;
+    }
+    canvas{
+        height: 100%;
+        width: 100%;
+    }
+</style>
 <body onload="init()">
 <canvas id="demoCanvas"></canvas>
 

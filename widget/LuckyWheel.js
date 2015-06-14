@@ -9,8 +9,8 @@
 		this.Container_constructor();
 
 		var config = {
-			size:400, // size in px
-			framerate:60,
+			size:300 * 3, // size in px
+			framerate:30,
 			numOfSector: 20, // number of
 			slowEndEffect : 1, // 0 = off , 1 = on
 			physics:{
@@ -27,7 +27,7 @@
 
 		var deltaDegree = 0;
 
-		this.init = function () {
+		this.init = function (x,y) {
 			stage.clear();
 			// Draw sectors
 			var angle = 0;
@@ -47,15 +47,15 @@
 			self.set({
 				regX : config.size,
 				regY : config.size,
-				x : config.size / 2,
-				y : config.size / 2
+				x : config.size / 2 + x,
+				y : config.size / 2 + y
 			});
 
 			// Draw a stop line
 			var stopLine = new createjs.Shape();
 			stopLine.graphics.s(createjs.Graphics.getRGB(0xFF0000)).setStrokeStyle(2);
-			stopLine.graphics.moveTo(self.x, 0);
-			stopLine.graphics.lineTo(self.x, 100);
+			stopLine.graphics.moveTo(self.x, 0 + y);
+			stopLine.graphics.lineTo(self.x, 100 + y);
 
 			// Add the wheel to stage
 			stage.addChild(self);
@@ -79,10 +79,8 @@
 				id = Math.floor(angle / sectorAngle),
 				color = Math.random() * 0xFFFFFF,
 				textColor = 0x000000,
-				text = new createjs.Text(id, Math.min(50,sectorAngle) + "px Arial", createjs.Graphics.getRGB( textColor));
+				text = new createjs.Text(id, Math.min(50 * 3 ,sectorAngle *3) + "px Arial", createjs.Graphics.getRGB( textColor));
 
-			console.log(createjs.Graphics.getRGB(color));
-			console.log(createjs.Graphics.getRGB(color * 0x222222));
 			shape.graphics.f(createjs.Graphics.getRGB(color));
 			shape.graphics.beginStroke(createjs.Graphics.getRGB(color - 0x000000)).setStrokeStyle(1);
 			shape.graphics.moveTo(0,0);
@@ -95,7 +93,7 @@
 			// hard tuning on relative position
 			text.x = config.size * 2.97 / 3;
 			text.y = config.size * 1.7 / 3;
-			text.regX = Math.min(50,sectorAngle)/5;
+			text.regX = Math.min(50 * 3 ,sectorAngle *3)/5;
 
 			//add the children to the sector container
 			sectorContainer.addChild(text);
@@ -168,6 +166,7 @@
 						if(child.text !== undefined) alert("The Lucky Number is " + child.text);
 					});
 
+					stage.dispatchEvent("END");
 				}
 			}
 		};
