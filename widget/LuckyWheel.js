@@ -163,7 +163,7 @@
 
 					// show some effect on the found object
 					_.each(found.children, function (child) {
-						if(child.text !== undefined) alert("The Lucky Number is " + child.text);
+						if(child.text !== undefined) alert("恭喜你中了「" + child.text+ "」");
 					});
 
 					stage.dispatchEvent("END");
