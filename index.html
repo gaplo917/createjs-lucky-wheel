@@ -1,0 +1,75 @@
+<!--/**-->
+<!--* Created by Gaplo917 on 13/6/15.-->
+<!--*/-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="plugin/createjs/createjs-2015.05.21.combined.js"></script>
+    <script src="plugin/underscore/underscore.js"></script>
+
+    <script src="widget/LuckyWheel.js"></script>
+    <script src="widget/Button.js"></script>
+
+</head>
+<script>
+    function init() {
+
+        var canvasDom = document.getElementById("demoCanvas"),
+            stage = new createjs.Stage("demoCanvas"),
+            luckyWheel = new LuckyWheel(stage);
+
+        canvasDom.height = luckyWheel.getConfig().size;
+        canvasDom.width = luckyWheel.getConfig().size + 200;
+
+        createjs.Ticker.timingMode = createjs.Ticker.RAF;
+        createjs.Ticker.maxDelta = 0;
+        createjs.Ticker.framerate = luckyWheel.getConfig().framerate;
+
+        // register tick event
+        createjs.Ticker.addEventListener("tick", function () {
+            stage.update();
+        });
+
+        luckyWheel.init();
+
+        var startText = new Button("START", "#66FF66"),
+            endText = new Button(" STOP ", "#FF6666");
+
+        startText.set({
+            x : luckyWheel.getConfig().size + 20 ,
+            y: 100
+        });
+        endText.set({
+            x : luckyWheel.getConfig().size + 20,
+            y : 200
+        });
+        endText.alpha = 0.4;
+
+
+        startText.addEventListener('click', function () {
+            createjs.Ticker.removeEventListener("tick", luckyWheel.event.deceleration);
+            createjs.Ticker.addEventListener("tick", luckyWheel.event.acceleration);
+            endText.alpha = 1;
+            startText.alpha = 0.4;
+        });
+        endText.addEventListener('click', function () {
+            createjs.Ticker.removeEventListener("tick", luckyWheel.event.acceleration);
+            createjs.Ticker.addEventListener("tick", luckyWheel.event.deceleration);
+            startText.alpha = 1;
+            endText.alpha = 0.4;
+        });
+        stage.addChild(startText);
+        stage.addChild(endText);
+        stage.update();
+    }
+
+
+
+</script>
+<body onload="init()">
+<canvas id="demoCanvas"></canvas>
+
+</body>
+</html>
