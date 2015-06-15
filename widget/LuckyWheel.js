@@ -79,7 +79,7 @@
 				id = Math.floor(angle / sectorAngle),
 				color = Math.random() * 0xFFFFFF,
 				textColor = 0x000000,
-				text = new createjs.Text(id == 0 ? "大\n獎" : id, Math.min(50 * 3 ,sectorAngle *3) + "px Arial", createjs.Graphics.getRGB( textColor));
+				text = new createjs.Text(id, Math.min(50 * 3 ,sectorAngle *3) + "px Arial", createjs.Graphics.getRGB( textColor));
 
 			shape.graphics.f(createjs.Graphics.getRGB(color));
 			shape.graphics.beginStroke(createjs.Graphics.getRGB(color - 0x000000)).setStrokeStyle(1);
@@ -106,7 +106,7 @@
 				y : config.size,
 				regX : config.size,
 				regY : config.size,
-				rotation: angle,
+				rotation: angle + sectorAngle/2,
 				startAngle : angle,
 				endAngle : angle + sectorAngle
 			});
@@ -151,7 +151,7 @@
 				if(deltaDegree <= 0){
 
 					var found = _.find(self.children, function (sector) {
-						var normalized = self.rotation * -1 + (sector.endAngle - sector.startAngle) / 2;
+						var normalized = self.rotation * -1;
 						normalized = normalized < 0 ? 360 + normalized : normalized;
 						return normalized >= sector.startAngle && normalized < sector.endAngle;
 					});
