@@ -10,7 +10,7 @@
 
 		var config = {
 			size:300 * 3, // size in px
-			framerate:30,
+			framerate:60,
 			numOfSector: 20, // number of
 			slowEndEffect : 1, // 0 = off , 1 = on
 			physics:{
@@ -19,7 +19,7 @@
 					acceleration : 1,
 					deceleration : 3,
 					initialAcceleration : 4, // will be used to accelerate to Half of maxSpeed
-					maxSpeed : 10
+					maxSpeed : 360
 				}
 			}
 
@@ -123,7 +123,7 @@
 		this.event = {
 			acceleration : function () {
 				var ANGULAR = config.physics.angular,
-					MAX_SPEED = ANGULAR.maxSpeed,
+					MAX_SPEED = ANGULAR.maxSpeed / config.framerate,
 					ACC = ANGULAR.acceleration / config.framerate,
 					INITAL_ACC = ANGULAR.initialAcceleration / config.framerate;
 
@@ -140,9 +140,9 @@
 			},
 			deceleration : function () {
 				var angular = config.physics.angular,
-					MAX_SPEED = angular.maxSpeed,
-					DEC = config.slowEndEffect && deltaDegree < MAX_SPEED / 4 ?
-					angular.deceleration/ config.framerate /4 :
+					MAX_SPEED = angular.maxSpeed / config.framerate,
+					DEC = config.slowEndEffect && deltaDegree < MAX_SPEED / 8 ?
+					angular.deceleration/ config.framerate / 20 :
 					angular.deceleration / config.framerate;
 
 				deltaDegree = (deltaDegree - DEC) > 0 ? deltaDegree - DEC : 0;
