@@ -17,9 +17,11 @@
 				angular:{
 					// degree per second
 					acceleration : 1,
-					deceleration : 3,
+					minDeceleration : 0.15, // min. friction apply
+					decelerationCoeff : 1/10,
 					initialAcceleration : 4, // will be used to accelerate to Half of maxSpeed
-					maxSpeed : 360
+					maxSpeed : 500,
+					maxDeceleration : 20
 				}
 			}
 
@@ -79,7 +81,7 @@
 				id = Math.floor(angle / sectorAngle),
 				color = Math.random() * 0xFFFFFF,
 				textColor = 0x000000,
-				text = new createjs.Text(id, Math.min(50 * 3 ,sectorAngle *3) + "px Arial", createjs.Graphics.getRGB( textColor));
+				text = new createjs.Text(id, Math.min(80 ,sectorAngle *3) + "px Arial", createjs.Graphics.getRGB( textColor));
 
 			shape.graphics.f(createjs.Graphics.getRGB(color));
 			shape.graphics.beginStroke(createjs.Graphics.getRGB(color - 0x000000)).setStrokeStyle(1);
@@ -91,9 +93,10 @@
 			shape.rotation = -1 * (sectorAngle/2) - 90 ;
 
 			// hard tuning on relative position
-			text.x = config.size * 2.94 / 3;
-			text.y = config.size * 1.7 / 3;
-			text.regX = Math.min(50 * 3 ,sectorAngle *3)/5;
+			text.x = config.size;
+			text.y = config.size / 2;
+			text.regX = text.getMeasuredWidth() / 2;
+			text.regY = text.getMeasuredHeight() * -1;
 
 			//add the children to the sector container
 			sectorContainer.addChild(text);
@@ -140,15 +143,19 @@
 			},
 			deceleration : function () {
 				var angular = config.physics.angular,
-					MAX_SPEED = angular.maxSpeed / config.framerate,
-					DEC = config.slowEndEffect && deltaDegree < MAX_SPEED / 8 ?
-					angular.deceleration/ config.framerate / 20 :
-					angular.deceleration / config.framerate;
+					DEC = (
+							// quadratic relationship on friction ( deceleration )
+							deltaDegree * deltaDegree * angular.decelerationCoeff + angular.minDeceleration > angular.maxDeceleration ?
+								angular.maxDeceleration :
+							deltaDegree * deltaDegree * angular.decelerationCoeff  + angular.minDeceleration
+						) / config.framerate * (deltaDegree < 0 ? 1 : -1);
 
-				deltaDegree = (deltaDegree - DEC) > 0 ? deltaDegree - DEC : 0;
+				deltaDegree += DEC ;
+
 				self.rotation = (self.rotation + deltaDegree) % 360;
 
-				if(deltaDegree <= 0){
+				// error toleration
+				if(deltaDegree <= 0.01){
 
 					var found = _.find(self.children, function (sector) {
 						var normalized = self.rotation * -1;

@@ -15,7 +15,7 @@
 
 
 	p.setup = function() {
-		var text = new createjs.Text(this.label, "20px Arial", "#000");
+		var text = new createjs.Text(this.label, "40px Arial", "#000");
 		text.textBaseline = "top";
 		text.textAlign = "center";
 

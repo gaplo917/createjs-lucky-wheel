@@ -9,16 +9,18 @@
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
     <title></title>
-    <script src="plugin/createjs/createjs-2015.05.21.combined.js"></script>
-    <script src="plugin/underscore/underscore.js"></script>
+    <script src="plugin/createjs/easeljs-0.8.1.min.js"></script>
+    <script src="plugin/underscore/underscore-min.js"></script>
+    <script src="plugin/fastclick/fastclick.js"></script>
 
+    <!--Widget-->
     <script src="widget/LuckyWheel.js"></script>
     <script src="widget/Button.js"></script>
 
 </head>
 <script>
     function init() {
-
+        FastClick.attach(document.body);
         var canvasDom = document.getElementById("demoCanvas"),
             stage = new createjs.Stage("demoCanvas"),
             luckyWheel = new LuckyWheel(stage);
@@ -26,18 +28,18 @@
         canvasDom.height = luckyWheel.getConfig().size + 200;
         canvasDom.width = luckyWheel.getConfig().size;
 
+        createjs.Touch.enable(stage);
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.maxDelta = 0;
         createjs.Ticker.framerate = luckyWheel.getConfig().framerate;
 
         //tick event
-        function tick() {stage.update();}
+        function tick() {
+            stage.update();
+        }
 
-        // register tick event
-        createjs.Ticker.addEventListener("tick", tick);
-
-        //Override the config
-        //luckyWheel.setConfig({numOfSector:10});
+        //demo for Override the config
+        luckyWheel.setConfig({numOfSector:10});
 
         luckyWheel.init(0,50);
 
@@ -46,11 +48,11 @@
 
         startText.set({
             x : 50 ,
-            y: 0
+            y : 20
         });
         endText.set({
-            x : 150,
-            y : 0
+            x : 690,
+            y : 20
         });
         endText.alpha = 0.4;
 
