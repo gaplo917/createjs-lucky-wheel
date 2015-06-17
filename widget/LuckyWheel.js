@@ -12,7 +12,6 @@
 			size:300 * 3, // size in px
 			framerate:60,
 			numOfSector: 20, // number of
-			slowEndEffect : 1, // 0 = off , 1 = on
 			physics:{
 				angular:{
 					// degree per second
@@ -34,14 +33,14 @@
 			// Draw sectors
 			var angle = 0;
 			while (angle < 360) {
-				self.addSector({
+
+				// update the angle after added a sector
+				angle = self.addSector({
 					angle:angle,
 					config:config
 				}, function (sector) {
 					// add to parent
 					self.addChild(sector);
-
-					angle = sector.endAngle;
 				});
 
 			}
