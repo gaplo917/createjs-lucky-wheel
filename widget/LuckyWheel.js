@@ -10,7 +10,7 @@
 
 		var config = {
 			size:300 * 3, // size in px
-			framerate:60,
+			framerate:30, // decrease the framerate for low-end device
 			numOfSector: 20, // number of
 			physics:{
 				angular:{
