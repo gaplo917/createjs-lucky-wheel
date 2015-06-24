@@ -9,8 +9,8 @@
 		this.Container_constructor();
 
 		var config = {
-			size:300 * 3, // size in px
-			framerate:30, // decrease the framerate for low-end device
+			size: 300 * 3, // size in px
+			framerate: 30, // decrease the framerate for low-end device
 			numOfSector: 20, // number of
 			physics:{
 				angular:{
@@ -114,7 +114,7 @@
 			});
 
 			// significantly increase performace by using cache
-			sectorContainer.cache(0,0,config.size * 2,config.size * 2);
+			sectorContainer.cache(config.size /2,config.size /2,config.size ,config.size);
 
 			if(typeof cb === "function") cb(sectorContainer);
 
