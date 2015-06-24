@@ -29,8 +29,8 @@
         canvasDom.width = luckyWheel.getConfig().size;
 
         createjs.Touch.enable(stage);
-        createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
-        createjs.Ticker.maxDelta = 1000 / 3 * 2 ;
+        createjs.Ticker.timingMode = createjs.Ticker.RAF;
+        createjs.Ticker.maxDelta = 1000 /60 * 2 ;
         createjs.Ticker.framerate = luckyWheel.getConfig().framerate;
 
         //tick event

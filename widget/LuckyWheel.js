@@ -10,7 +10,7 @@
 
 		var config = {
 			size: 300 * 3, // size in px
-			framerate: 30, // decrease the framerate for low-end device
+			framerate: 60, // decrease the framerate for low-end device
 			numOfSector: 20, // number of
 			physics:{
 				angular:{
@@ -58,7 +58,11 @@
 			stopLine.graphics.moveTo(self.x, 0 + y);
 			stopLine.graphics.lineTo(self.x, 100 + y);
 
-			// Add the wheel to stage
+
+            // significantly increase performace by using cache
+            self.cache(config.size /2,config.size /2,config.size ,config.size);
+
+            // Add the wheel to stage
 			stage.addChild(self);
 
 			stage.addChild(stopLine);
@@ -121,13 +125,13 @@
 			return angle + sectorAngle;
 
 		};
-
+        var ANGULAR = config.physics.angular,
+            MAX_SPEED = ANGULAR.maxSpeed / config.framerate,
+            ACC = ANGULAR.acceleration / config.framerate,
+            INITAL_ACC = ANGULAR.initialAcceleration / config.framerate;
 		this.event = {
 			acceleration : function () {
-				var ANGULAR = config.physics.angular,
-					MAX_SPEED = ANGULAR.maxSpeed / config.framerate,
-					ACC = ANGULAR.acceleration / config.framerate,
-					INITAL_ACC = ANGULAR.initialAcceleration / config.framerate;
+
 
 				deltaDegree = (deltaDegree + ACC) > MAX_SPEED ?
 					MAX_SPEED :
